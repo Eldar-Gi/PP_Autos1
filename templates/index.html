@@ -9,30 +9,41 @@
 
 <p><a href="/car/new">Įvesti naują automobilį</a></p>
 <table>
-    <tr>
-        <th>id</th>
-        <th>Gamintojas</th>
-        <th>Modelis</th>
-        <th>Spalva</th>
-        <th>Pagaminimo metai</th>
-        <th>Kaina</th>
-        <th>Veiksmai</th>
-    </tr>
-    {% for car in cars %}
-    <tr>
-        <td>{{ car.id }}</td>
-        <td>{{ car.gamintojas }}</td>
-        <td>{{ car.modelis }}</td>
-        <td>{{ car.spalva }}</td>
-        <td>{{ car.pagaminimo_metai }}</td>
-        <td>{{ car.kaina }}</td>
-        <td><a href="/car/{{ car.id }}">Žiūrėti</a>
-            <a href="/car/edit/{{ car.id }}">Redaguoti</a>
-            <form action="/car/delete/{{ car.id }}" method="post" style="display:inline;">
-                <input type="submit" value="Trinti">
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Gamintojas</th>
+            <th>Modelis</th>
+            <th>Spalva</th>
+            <th>Pagaminimo metai</th>
+            <th>Kaina</th>
+            <th>Veiksmai</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for car in cars %}
+        <tr>
+            <td>{{ car.id }}</td>
+            <td>{{ car.gamintojas }}</td>
+            <td>{{ car.modelis }}</td>
+            <td>{{ car.spalva }}</td>
+            <td>{{ car.pagaminimo_metai }}</td>
+            <td>{{ car.kaina }}</td>
+            <td>
+                <a href="/car/{{ car.id }}">Žiūrėti</a>
+                <a href="/car/edit/{{ car.id }}">Redaguoti</a>
+                <form action="/car/delete/{{ car.id }}" method="post" style="display:inline;">
+                    <input type="submit" value="Trinti">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5"><strong> visų automobilių kainų sumą:</strong></td>
+            <td colspan="2">{{ total_price|round(2) }} €</td>
+        </tr>
+    </tfoot>
 </table>
 {% endblock %}

@@ -20,10 +20,11 @@ def home():
             Automobiliai.gamintojas.ilike(f"{search_text}%") |
             Automobiliai.modelis.ilike(f"{search_text}%")
         )
-        return render_template("index.html", cars=filtered_rows)
+        cars = filtered_rows
     else:
-        all_cars = Automobiliai.query.all()
-        return render_template("index.html", cars=all_cars)
+        cars = Automobiliai.query.all()
+    all_p = db.session.query(db.func.sum(Automobiliai.kaina)).scalar()
+    return render_template("index.html", cars=cars, total_price=all_p)
 
 
 @app.route("/car/<int:car_id>")
