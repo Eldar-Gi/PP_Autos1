@@ -1,6 +1,6 @@
 from models import db, Automobiliai
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-
+from serialaizers import CarsSchema
 app = Flask(__name__)
 
 # Database configuration
@@ -12,19 +12,25 @@ with app.app_context():
     db.create_all()
 
 
+# @app.route("/uzd")
+# def home():
+#     all_autos = Automobiliai.query.all()
+#     cars_json = [{
+#         "id": car.id,
+#         "gamintojas": car.gamintojas,
+#         "modelis": car.modelis,
+#         "spalva": car.spalva,
+#         "pagaminimo_metai": car.pagaminimo_metai,
+#         "kaina": car.kaina
+#     } for car in all_autos]
+#     return jsonify(cars_json)
+
 @app.route("/uzd")
 def home():
-    cars = Automobiliai.query.all()
-    cars_json = [{
-        "id": car.id,
-        "gamintojas": car.gamintojas,
-        "modelis": car.modelis,
-        "spalva": car.spalva,
-        "pagaminimo_metai": car.pagaminimo_metai,
-        "kaina": car.kaina
-    } for car in cars]
+    all_autos = Automobiliai.query.all()
+    cars_json = [CarsSchema.model_validate(car, from_attributes=True).model_dump() for car in all_autos]
     return jsonify(cars_json)
 
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(port=5001, debug=True)
